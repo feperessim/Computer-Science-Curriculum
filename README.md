@@ -1,4 +1,4 @@
-# Computer-Science---Curriculum
+# Computer-Science-Curriculum
 Files from online courses directly or somehow related to computer science
 
 This repository contains files from online courses that are directly  or somehow relate to computer science curriculum.
