@@ -1,0 +1,114 @@
+0. How many different colors does each format support?
+
+-  BMP: The color numbers in BMP depends on the storage bit of each pixel. BMP has 1 bit(2 colors), 2 bit(4 colors), 
+        4 bit(16 colors), 8 bit(256 colors), 16 bit(2^16 colors), 24 bit(2^24 colors), 32bit(2^32 colors).
+
+- JPEG : The maximum bit per pixel in JPEG is 24 bit, which means 2^24 colors possibility.
+
+-  GIF : The maximum bit per pixel in GIF is 8 bit, which means 256 colors possibility. 
+
+-  PNG : The maximum bit per pixel in PNG is 32 bit(24 bit for colors and 8 bit for alpha/transparency), which means 2^24 colors possibility.
+
+1. Which of the formats supports animation?
+- GIF
+
+2. What's the difference between lossy and lossless compression? 
+
+- Lossy  compression reduces a file by permanently eliminating certain information, especially redundant information. When the file is uncompressed, only a part of the
+  original information is still there (although the user may not notice it). 
+
+- Lossless compression, every single bit of data that was originally in the file remains after the file is uncompressed. All of the information is completely restored. 
+
+
+3. Which of these formats is lossy-compressed?
+
+- JPEG
+
+4. What happens, technically speaking, when a file is deleted on a FAT file system?
+
+- FAT stands for File Allocation Table and is a linked list of disk clusters that DOS uses to manage space on a random-access device; 16 or 32 refers to the sector numbers'
+bit length.
+In most cases, deleting a file most often merely rewrites the metadata that pointed to the file, but leaves the disk blocks containing the file's contents intact.
+When the operating system erases a FAT file, two things occur. First, the system modifies the filename's first character in the file's directory entry to signal that the file has been deleted and that the directory entry can be recycled. Second, the system moves all of the file's FAT clusters to the hard drive's list of free clusters. The actual file data is never touched.
+
+5. What can someone like you do to ensure (with high probability) that files you delete cannot be recovered?
+
+- Degaussing the drive to randomize the magnetic domains--most likely rendering the drive unusable in the process.
+- Overwriting the drive's data so that it cannot be recovered  
+
+6. What's stdint.h
+
+- The <stdint.h> is a header that shall declare sets of integer types having specified widths, and shall define corresponding sets of macros. 
+- It shall also define macros that specify limits of integer types corresponding to types defined in other standard headers.
+The "width" of an integer type is the number of bits used to store its value in a pure binary system; the actual type may use more bits than that (for example, a 28-bit type
+could be stored in 32 bits of actual storage). An N-bit signed type has values in the range -2N-1 or 1-2N-1 to 2N-1-1, while an N-bit unsigned type has values in the range 0
+to 2N-1.
+- The typedef name intN_t designates a signed integer type with width N, no padding bits, and a two's-complement representation. Thus, int8t denotes a signed integer type 
+with a width of exactly 8 bits. The typedef name uintN_t designates an unsigned integer type with width N. Thus, uint24_t denotes an unsigned integer type with a width 
+of exactly 24 bits.
+
+7. What's the point of using uint8_t, uint32_t, int32_t, and uint16_t in a program?
+
+- It is useful to make some operation low level operation and have a better binary's vizualization of the bits that you are work on, also it saves space in the memory
+because you will be working only with the specific values, imagine whether a bmp file hadn't pre-defined types, would be hard to know identify what each thing in the 
+file represents, and the file size would be a lot bigger without need. To more important thing in some cases is to save spaces, in others as deal with base 64 for example
+you will only need uint8_t type to work which is more suitable for work and do the operations of encode and decoding. Also as said in the problem set 4, certain kind of bit
+pattern are used to represent which kind of file we are working.
+ 
+8. How many bytes is a BYTE, a DWORD, a LONG, and a WORD, respectively? (Assume a 32-bit architecture like the CS50 Appliance.)
+
+-  BYTE: 1 Byte
+- DWORD: 4 Bytes
+-  LONG: 4 Bytes
+-  WORD: 2 Bytes
+
+9. What (in ASCII, decimal, or hexadecimal) must the first two bytes of any BMP file be? (Leading bytes used to identify file formats (with high probability) are 
+generally called "magic numbers.)"  
+
+- The first 2 bytes of the BMP file format are the character "B" then the character "M" in ASCII encoding to indicate bitmap.
+
+10. What's the difference between bfSize and biSize? 
+
+- bfSize Specifies the size, in bytes, of the bitmap file.
+- biSize Specifies the size of the structure, in bytes. This size does not include the color table or the masks mentioned in the biClrUsed member. biClrUsed specifies 
+  the number of color indexes in the color table that are actually used by the bitmap.
+
+11. What does it mean if biHeight is negative?
+
+- biHeight Specifies the height of the bitmap, in pixels.
+- If biHeight is positive, the bitmap is a bottom-up DIB and its origin is the lower left corner.
+- If biHeight is negative, the bitmap is a top-down DIB and its origin is the upper left corner.
+- If biHeight is negative, indicating a top-down DIB, biCompression must be either BI_RGB or BI_BITFIELDS. Top-down DIBs cannot be compressed.
+
+12. What field in BITMAPINFOHEADER specifies the BMP's color depth (i.e., bits per pixel)?
+
+- biBitCount Specifies the number of bits per pixel.
+
+13. Why might fopen return NULL in copy.c:37?
+
+- To be sure the destination file was created successfully. Things like no enough space on disk and a file protected with written could happen
+
+14. Why is the third argument to fread always 1 in our code?
+
+- The function fread() reads nmemb elements of data, each size bytes long, from the stream pointed to by stream, storing them at the location given by ptr.
+- Since there will be only 1 BITMAPINFOHEADER inside a bmp, the fread should only read 1 set of sizeof(BITMAPFILEHEADER).
+
+15. What value does copy.c:70 assign padding if bi.biWidth is 3?
+
+- One
+
+16. What does fseek do?
+
+- The fseek() function sets the file position indicator for the inptr pointed to by inptr. The new position, measured in bytes, is obtained by adding padding bytes to 
+  the position specified by whence. In copy.c, if there's any padding, the reading file will skip reading the padding area by offsetting the position indicator.
+
+17. What is SEEK_CUR?
+
+- In fseek function, if whence is set to SEEK_SET, SEEK_CUR, or SEEK_END, the offset is relative to the start of the file, the current position indicator, or 
+  end-of-file, respectively. A successful call to the fseek() function clears the end-of-file indicator for the stream and undoes any effects of the ungetc(3) function 
+  on the same stream.
+
+
+18. Whodunit?
+
+- Rob Bowden

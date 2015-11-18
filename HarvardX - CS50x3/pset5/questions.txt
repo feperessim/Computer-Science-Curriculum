@@ -1,0 +1,92 @@
+0.  What is pneumonoultramicroscopicsilicovolcanoconiosis?
+    
+    Is an English word that refers to a lung disease that is otherwise known as silicosis. It is the longest word in the 
+    English language published in a dictionary, the Oxford English Dictionary.
+    According to the Oxford English Dictionary, it is "an artificial long word said to mean a lung disease caused by 
+    inhaling very fine ash and sand dust."
+
+1.  According to its man page, what does getrusage do?
+    
+    getrusage() returns resource usage measures for who, which can be one of the following:
+
+    RUSAGE_SELF
+              Return resource usage statistics for the calling process, which is the sum of resources used by all threads in the process.
+
+       RUSAGE_CHILDREN
+              Return  resource  usage  statistics  for  all  children  of  the  calling process that have terminated and been waited for.  These statistics will include the
+              resources used by grandchildren, and further removed descendants, if all of the intervening descendants waited on their terminated children.
+
+       RUSAGE_THREAD (since Linux 2.6.26)
+              Return resource usage statistics for the calling thread.
+
+2.  Per that same man page, how many members are in a variable of type struct rusage? 
+    
+    16 memebers
+
+3.  Why do you think we pass before and after by reference (instead of by value) to calculate, even though we're not changing their contents?
+    
+    To have values assigned to its members and end up using this values to calculate how much time passed since the functions after before
+    was called did yours instructions and then get back to the point where it was called.
+
+4.  Explain as precisely as possible, in a paragraph or more, how main goes about reading words from a file. In other words, convince us that 
+    you indeed understand how that function's for loop works.
+    
+    The address of the file text is assigned to the pointer fp, in the for loop, a character from the file is read and assigned to the variable c and then
+    the character is tested against EOF.
+
+    The next line the character read is tested whether it is alphabetic (e.g a through z or A through Z) or apostrophe, if the character is alphabetic then
+    the instructions below inside the brackets can happen, otherwise whether the character read is an postrophe the program must check if the apostrophe
+    is not the first character of the given word, because no word comes with an apostrophe before it, then the value of index is checked against 0.
+
+    The instructions inside the brackets save the character in the array word and increment the variable index by 1.
+    Still inside the brackets the variable index is tested against the variable length whose value is 45. If it is true then the file keep being read
+    untill reach end of file indicator or the character read is not an alphabetical character. And then the variable index is assigned to 0 to be ready
+    to read the next word.
+
+    In case the first if statment fails there is another test that tests if the character read is a digit, if it is true the file keep being read untill
+    reach the end of file or the character readed not be a digit. And then the variable index is assigned to 0;
+
+    Otherwise, the program test the variable index against 0, whether index is not equal to 0 then we have found a new word, the null terminator character is assinged
+    to the array word, the variable counter is updated. After it the function getrusage is called for the first time and then the function check to seek for the word
+    in the dictonary, assigning the return value to the mispelled var, and then getrusage are called again to measure the time that the function check spended to 
+    seek for the word in the dictonary. 
+
+    The variable mispelled is tested to see whether there is some word that is not in the dictonary, in case of true the word is printed on the screen and the variable
+    mispellings is incremented by one.
+
+    The variable index is assigned to zero again.
+
+    This process continue untill the program reach the end of file of the text file.  
+
+5.  Why do you think we used fgetc to read each word's characters one at a time rather than use fscanf with a format string like "%s" 
+    to read whole words at a time? Put another way, what problems might arise by relying on fscanf alone?  
+
+    Use fscanf() might ends up with a string contains other signs, like comma, thus the result might not be listed in the dictionary for spelling check.
+
+6.  Why do you think we declared the parameters for check and load as const?
+    
+    To avoid that changes be made in the words passed to these functions
+
+7. What data structure(s) did you use to implement your spell-checker? Be sure not to leave your answer at just "hash table," "trie," or the like. 
+   Expound on what's inside each of your "nodes."  
+
+    I used a static hashtable with 26 pointers, at the declaration time each pointer points to NULL pointer, as far as load is called, the dictionary is read,
+    we get the index of the word arrived and look at the hashtable, whether the location points to null we alloc space for the head of the linked list 
+    and then add the new word, otherwise we walk by the linked list pointed at the index given by a certain function, and we walk by untill find NULL, and then we
+    insert the new word there.
+    The linked list that the hashtable will point to is  a linked list containing two members, a pointer to the next node and a pointer to the word that I want to store it,
+    I used a pointer to the word instead of an array of fixed size, since not all words have the same size, then I allocted space at running time calling
+    malloc what the cost is less than use arrays of fixed size.  
+
+8.  How slow was your code the first time you got it working correctly?
+    
+    16 seconds 
+
+9.  What kinds of changes, if any, did you make to your code in order to improve its performance?
+    
+    I made all efforts to make my code improve its performance, since the computer I am right now doesn't offer too much that can be exploited, I did all my best to improve it
+    spended hours to looking for mistakes at valgrind and GBD and fixing all of them, and changing the functions as much as possible to improve the performance. 
+
+10. Do you feel that your code has any bottlenecks that you were not able to chip away at?
+
+    Not really.
